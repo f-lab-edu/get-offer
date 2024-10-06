@@ -1,11 +1,11 @@
-package com.get_offer.product.service
+package com.get_offer.auction.service
 
 import com.get_offer.product.domain.Category
 import com.get_offer.product.domain.Product
 import com.get_offer.product.domain.ProductStatus
 import java.time.LocalDateTime
 
-data class ProductListDto(
+data class AuctionProductListDto(
     val id: Long?,
     val writerId: Long,
     val name: String,
@@ -18,8 +18,8 @@ data class ProductListDto(
     val isMine: Boolean,
 ) {
     companion object {
-        fun of(product: Product, userId: Long?): ProductListDto {
-            return ProductListDto(
+        fun of(product: Product, userId: Long?): AuctionProductListDto {
+            return AuctionProductListDto(
                 id = product.id,
                 writerId = product.writerId,
                 name = product.title,

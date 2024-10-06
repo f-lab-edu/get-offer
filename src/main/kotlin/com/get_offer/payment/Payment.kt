@@ -1,19 +1,21 @@
-package com.get_offer.bid
+package com.get_offer.payment
 
 import com.get_offer.common.AuditingTimeEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 @Entity
-class History(
-    private val productId: Long,
-    private val userId: Long,
-    private val biddingPrice: Int,
-) : AuditingTimeEntity() {
+@Table(name = "PAYMENTS")
+class Payment(
+    // payments 관련 정보 저장
+    val userId: Long,
+
+    val auctionId: Long,
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private val id: Long? = null
-
-}
+    val id: Long? = null,
+) : AuditingTimeEntity()

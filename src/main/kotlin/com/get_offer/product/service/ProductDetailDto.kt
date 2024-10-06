@@ -26,7 +26,7 @@ data class ProductDetailDto(
             return ProductDetailDto(
                 id = product.id,
                 writer = WriterVo(writer.id, writer.nickname, writer.image),
-                name = product.name,
+                name = product.title,
                 category = product.category,
                 images = product.images.images,
                 description = product.description,

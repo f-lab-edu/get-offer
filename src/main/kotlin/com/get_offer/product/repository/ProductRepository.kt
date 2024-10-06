@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ProductRepository : JpaRepository<Product, Long> {
+    fun findAllByWriterIdOrderByEndDateDesc(writerId: Long): List<Product>
+
     fun findAllByStatusInOrderByEndDateDesc(statuses: List<ProductStatus>, pageRequest: PageRequest): Page<Product>
 }

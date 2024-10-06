@@ -1,13 +1,10 @@
 package com.get_offer.product.service
 
-import com.get_offer.product.domain.Category
-import com.get_offer.product.domain.Product
-import com.get_offer.product.domain.ProductImagesVo
+import com.get_offer.TestFixtures
 import com.get_offer.product.domain.ProductStatus
 import com.get_offer.product.repository.ProductRepository
 import com.get_offer.user.domain.User
 import com.get_offer.user.repository.UserRepository
-import java.time.LocalDateTime
 import java.util.*
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Assertions.*
@@ -36,31 +33,9 @@ class ProductServiceTest {
     @DisplayName("상품 리스트 Dto 변환")
     fun productListToDto() {
         // given
-        val givenProduct = Product(
-            1L,
-            "product",
-            Category.GAMES,
-            ProductImagesVo(listOf("https://image1.png", "https://image2.png")),
-            "desc for product",
-            10000,
-            15000,
-            ProductStatus.IN_PROGRESS,
-            LocalDateTime.now(),
-            LocalDateTime.now()
-        )
+        val givenProduct = TestFixtures.createProductInProgress(1L)
 
-        val givenProduct2 = Product(
-            2L,
-            "product2",
-            Category.SPORTS,
-            ProductImagesVo(listOf("https://image1.png", "https://image2.png")),
-            "desc for product",
-            12000,
-            15500,
-            ProductStatus.WAIT,
-            LocalDateTime.now(),
-            LocalDateTime.now()
-        )
+        val givenProduct2 = TestFixtures.createProductWait(2L)
         val pageable = PageRequest.of(0, 3)
         val items = listOf(givenProduct, givenProduct2)
 
@@ -91,32 +66,18 @@ class ProductServiceTest {
     @DisplayName("상품상세 Dto 변환")
     fun productDetailToDto() {
         // given
-        val givenProduct = Product(
-            1L,
-            "product",
-            Category.GAMES,
-            ProductImagesVo(listOf("https://image1.png", "https://image2.png")),
-            "desc for product",
-            10000,
-            15000,
-            ProductStatus.IN_PROGRESS,
-            LocalDateTime.now(),
-            LocalDateTime.now()
-        )
-
-        val givenUser = User(
-            "user", "https://image1.png"
-        )
+        val givenProduct = TestFixtures.createProductInProgress(1L)
+        val givenUser = User("user", "https://image1.png")
 
         `when`(mockProductRepository.findById(any())).thenReturn(Optional.of(givenProduct))
         `when`(mockUserRepository.findById(any())).thenReturn(Optional.of(givenUser))
 
         // when
-        val sut = productService.getProductDetail(1L, 1L)
+        val result = productService.getProductDetail(1L, 1L)
 
         // then
-        Assertions.assertThat(sut.images.size).isEqualTo(2)
-        Assertions.assertThat(sut.images[0]).isEqualTo("https://image1.png")
-        Assertions.assertThat(sut.images[1]).isEqualTo("https://image2.png")
+        Assertions.assertThat(result.images.size).isEqualTo(2)
+        Assertions.assertThat(result.images[0]).isEqualTo("https://image1.png")
+        Assertions.assertThat(result.images[1]).isEqualTo("https://image2.png")
     }
 }

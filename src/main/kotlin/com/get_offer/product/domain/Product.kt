@@ -17,7 +17,7 @@ import java.time.LocalDateTime
 class Product(
     val writerId: Long,
 
-    val name: String,
+    val title: String,
 
     @Enumerated(EnumType.STRING)
     val category: Category,
