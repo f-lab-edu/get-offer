@@ -20,8 +20,7 @@ class AuctionIntegrationTest(
     @Test
     fun auctionSellIntegrationTest() {
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/auctions/sellHistory")
-                .param("userId", "1")
+            MockMvcRequestBuilders.get("/auctions/sellHistory").param("userId", "1")
         ).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.size()").value(3))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id").value("1"))
@@ -40,12 +39,11 @@ class AuctionIntegrationTest(
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[2].category").value("FURNITURE"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[2].thumbnail").value("https://picsum.photos/200/300"))
     }
-    
+
     @Test
     fun auctionBuyIntegrationTest() {
         mockMvc.perform(
-            MockMvcRequestBuilders.get("/auctions/buyHistory")
-                .param("userId", "2")
+            MockMvcRequestBuilders.get("/auctions/buyHistory").param("userId", "2")
         ).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.data.size()").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].productId").value("1"))
@@ -56,5 +54,33 @@ class AuctionIntegrationTest(
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].category").value("GAMES"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].thumbnail").value("https://picsum.photos/200/300"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].finalPrice").value("10000"))
+    }
+
+    @Test
+    fun getSoldAuctionDetailIntegrationTest() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/auctions/1/sold").param("userId", "1")
+        ).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.auctionId").value("1"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.auctionStatus").value("COMPLETED"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.product.id").value("1"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.product.writerId").value("1"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.product.name").value("nintendo"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.buyer.id").value("2"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.buyer.nickname").value("test2"))
+    }
+
+    @Test
+    fun getBoughtAuctionDetailIntegrationTest() {
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/auctions/1/bought").param("userId", "2")
+        ).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.auctionId").value("1"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.auctionStatus").value("COMPLETED"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.product.id").value("1"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.product.writerId").value("1"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.product.name").value("nintendo"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.seller.id").value("1"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data.seller.nickname").value("test"))
     }
 }

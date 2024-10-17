@@ -6,6 +6,7 @@ import com.get_offer.product.domain.Category
 import com.get_offer.product.domain.Product
 import com.get_offer.product.domain.ProductImagesVo
 import com.get_offer.product.domain.ProductStatus
+import com.get_offer.user.domain.User
 import java.time.LocalDateTime
 
 object TestFixtures {
@@ -60,6 +61,14 @@ object TestFixtures {
             buyerId = buyerId ?: 1L,
             finalPrice = 15500,
             auctionStatus = AuctionStatus.COMPLETED,
+        )
+    }
+
+    fun createBuyer(buyerId: Long?): User {
+        return User(
+            nickname = "buyer1",
+            image = "image.png",
+            id = buyerId ?: 1L,
         )
     }
 
