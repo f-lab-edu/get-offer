@@ -23,3 +23,9 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
         show_sql: true
+aws:
+  s3:
+    bucket: get-offer-bucket
+  stack:
+    auto: false
+  credentials:

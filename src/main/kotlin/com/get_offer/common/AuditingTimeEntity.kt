@@ -11,8 +11,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 @MappedSuperclass
 abstract class AuditingTimeEntity {
     @CreatedDate
-    private var createdAt: LocalDateTime = LocalDateTime.now()
+    val createdAt: LocalDateTime = LocalDateTime.now()
 
     @LastModifiedDate
-    private var updatedAt: LocalDateTime = LocalDateTime.now()
+    var updatedAt: LocalDateTime = LocalDateTime.now()
 }
