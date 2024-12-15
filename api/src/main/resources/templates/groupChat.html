@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat Room</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9; /* 기존 UI와 다른 배경색 */
+            margin: 0;
+            padding: 0;
+        }
+
+        #chat-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        #message-box {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            height: 300px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+        }
+
+        #message-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #message-box li {
+            padding: 5px;
+            margin: 5px 0;
+            background-color: #e7f3ff; /* 메시지 박스 배경 */
+            border-radius: 5px;
+        }
+
+        #message-form {
+            display: flex;
+            margin-top: 10px;
+        }
+
+        #message-form input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        #message-form button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #message-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div id="chat-container">
+    <h1>상품 채팅방</h1>
+    <div id="message-box">
+        <ul id="messages">
+        </ul>
+    </div>
+    <form id="message-form" onsubmit="sendMessage(event)">
+        <input id="message-input" placeholder="메시지를 입력하세요" type="text"/>
+        <button type="submit">전송</button>
+    </form>
+</div>
+<script>
+    const productId = [[${productId}]];
+    const senderId = [[${senderId}]];
+    const socket = new SockJS('/ws');
+    const stompClient = Stomp.over(socket);
+
+    // 웹소켓 연결
+    stompClient.connect({}, function () {
+        stompClient.subscribe(`/topic/group-chat/${productId}`, function (message) {
+            showMessage(JSON.parse(message.body));
+        });
+    });
+
+    // 메시지 전송
+    function sendMessage(event) {
+        event.preventDefault();
+        const messageInput = document.getElementById('message-input');
+        const messageContent = messageInput.value.trim();
+
+        if (messageContent && stompClient) {
+            const message = {
+                senderId: senderId,
+                content: messageContent
+            };
+            stompClient.send(`/app/group-chat/${productId}/send`, {}, JSON.stringify(message));
+            messageInput.value = '';
+        }
+    }
+
+    // 메시지 표시
+    function showMessage(message) {
+        const messages = document.getElementById('messages');
+        const messageElement = document.createElement('li');
+        messageElement.innerHTML = `<strong>${message.senderId}</strong>: ${message.content}`;
+        messages.appendChild(messageElement);
+
+        // 스크롤 하단으로 유지
+        const messageBox = document.getElementById('message-box');
+        messageBox.scrollTop = messageBox.scrollHeight;
+    }
+</script>
+</body>
+</html>

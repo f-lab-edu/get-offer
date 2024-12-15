@@ -1,5 +1,7 @@
 package com.get_offer.product.service
 
+import com.get_offer.chat.service.ChatRoomService
+import com.get_offer.chat.service.GroupChatRoomService
 import com.get_offer.common.exception.ApiException
 import com.get_offer.common.exception.ExceptionCode
 import com.get_offer.common.multipart.ImageService
@@ -25,6 +27,8 @@ class ProductService(
     private val productRepository: ProductRepository,
     private val userRepository: UserRepository,
     private val naverService: NaverService,
+    private val chatRoomService: ChatRoomService,
+    private val groupChatRoomService: GroupChatRoomService,
 ) {
 
     fun getProductList(userId: Long, pageRequest: PageRequest): Page<ProductListDto> {
@@ -62,6 +66,9 @@ class ProductService(
                 status = Product.checkStatus(req.startDate)
             )
         )
+
+        // 그룹 채팅방 생성 //TODO : 이벤트 처리 등으로 의존성 제거 고려
+        groupChatRoomService.createGroupChatRoom(product)
         return ProductSaveDto.of(product)
     }
 

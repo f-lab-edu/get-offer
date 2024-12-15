@@ -16,18 +16,19 @@ class ChatRoomService(
     private val chatMessageRepository: ChatMessageRepository,
     private val productRepository: ProductRepository,
 ) {
+
     @Transactional
     fun startChat(requesterId: Long, productId: Long): ChatRoomDto {
         // 기존 채팅방 여부 확인
-        val existingRoom = chatRoomRepository.findByRequesterIdAndProductId(requesterId, productId)
+        val existingRoom = chatRoomRepository.findBySenderIdAndProductId(requesterId, productId)
         if (existingRoom != null) return ChatRoomDto(existingRoom.id)
 
-        // 새 채팅방 생성
         val sellerId = getSellerIdFromProductId(productId)
-
         if (sellerId == requesterId) throw BadRequestException("채팅 상대방이 본인일 수 없습니다.")
+
+        // 새 채팅방 생성
         val chatRoom =
-            chatRoomRepository.save(ChatRoom(requesterId = requesterId, sellerId = sellerId, productId = productId))
+            chatRoomRepository.save(ChatRoom(senderId = requesterId, sellerId = sellerId, productId = productId))
         return ChatRoomDto(chatRoom.id)
     }
 

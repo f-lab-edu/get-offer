@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ChatRoomRepository : JpaRepository<ChatRoom, Long> {
-    fun findByRequesterIdAndProductId(buyerId: Long, itemId: Long): ChatRoom?
+    fun findBySenderIdAndProductId(buyerId: Long, itemId: Long): ChatRoom?
 }

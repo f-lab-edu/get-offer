@@ -5,8 +5,9 @@ import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
 
 @Converter
-class ProductImagesConverter : AttributeConverter<ProductImagesVo, String> {
-    private val objectMapper = ObjectMapper()
+class ProductImagesConverter(
+    private val objectMapper: ObjectMapper,
+) : AttributeConverter<ProductImagesVo, String> {
 
     override fun convertToDatabaseColumn(attribute: ProductImagesVo?): String {
         return objectMapper.writeValueAsString(attribute)
