@@ -15,6 +15,11 @@ spring:
     redis:
       port: 6379
       host: localhost
+    elasticsearch:
+      username: ENC(pcwpA4Hm9T38LCDHZEUcZQ==)
+      password: ENC(BuO7SEfAbQ9EksNc6DCsbAahLaqr0R2j)
+      host: ENC(L4UkVr3UKCIEzDpDLi8jsqToYaioNVE1)
+      port: 9200
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ENC(uKelITbJd52jwMV9Mxa8Ghri9Vgyu1c2nLvSMP44vsfgbjNCFnm4QKvMji8F9Qze1TdaYQ3TA1ZlAFmBmFco1zmdSljsIr8C)
@@ -72,8 +77,15 @@ management:
       enabled: true
     os:
       enabled: true
+  health:
+    elasticsearch:
+      enabled: false
   endpoints:
     web:
       exposure:
         include: health,info,beans,conditions, httptrace, metrics
         exclude: threaddump, heapdump
+logging:
+  level:
+    org.elasticsearch: DEBUG
+    org.apache.http: DEBUG

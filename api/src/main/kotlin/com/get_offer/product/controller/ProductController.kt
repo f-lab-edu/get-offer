@@ -7,6 +7,7 @@ import com.get_offer.product.service.ProductListDto
 import com.get_offer.product.service.ProductSaveDto
 import com.get_offer.product.service.ProductService
 import com.get_offer.product.service.ProductSummaryDto
+import com.get_offer.search.service.SearchService
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile
 @RequestMapping("/products")
 class ProductController(
     private val productService: ProductService,
+    private val searchService: SearchService,
 ) {
     @GetMapping
     fun getProductList(
@@ -71,6 +73,32 @@ class ProductController(
     ): ApiResponse<ProductSummaryDto> {
         return ApiResponse.success(
             productService.summaryProductDescription(productId)
+        )
+    }
+
+    /**
+     * 상품 이름으로 검색하기 -- Like 검색
+     */
+    @GetMapping("/search")
+    fun searchByProductName(
+        @AuthenticatedUser userId: Long,
+        @RequestParam("productName") productName: String,
+    ): ApiResponse<List<ProductListDto>> {
+        return ApiResponse.success(
+            productService.searchByProductName(productName, userId)
+        )
+    }
+
+    /**
+     * 상품 이름으로 검색하기 -- elasticsearch 검색
+     */
+    @GetMapping("/search/es")
+    fun searchEsByProductName(
+        @AuthenticatedUser userId: Long,
+        @RequestParam("productName") productName: String,
+    ): ApiResponse<List<ProductListDto>> {
+        return ApiResponse.success(
+            searchService.searchByProductName(productName, userId)
         )
     }
 }

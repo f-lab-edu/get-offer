@@ -139,4 +139,25 @@ class ProductIntegrationTest(
             "images", name, MediaType.IMAGE_PNG_VALUE, Files.readAllBytes(imagePath)
         )
     }
+
+    @Test
+    fun searchByProductNameTest() {
+        mockMvc.perform(
+            get("/products/search").header("Authorization", token)
+                .param("productName", "nintendo")
+        ).andDo(MockMvcResultHandlers.print()).andExpect(status().isOk)
+            .andExpect(jsonPath("$.data.size()").value("2"))
+            .andExpect(jsonPath("$.data[0].name").value("nintendo"))
+            .andExpect(jsonPath("$.data[1].name").value("nintendo switch"))
+    }
+
+    @Test
+    fun searchByProductNameEsTest() {
+        mockMvc.perform(
+            get("/products/search/es").header("Authorization", token)
+                .param("productName", "nintendo")
+        ).andDo(MockMvcResultHandlers.print()).andExpect(status().isOk)
+            .andExpect(jsonPath("$.data[0].name").value("nintendo"))
+            .andExpect(jsonPath("$.data[1].name").value("nintendo switch"))
+    }
 }

@@ -32,7 +32,8 @@ VALUES (3, 1, 'ikea chair', '저쩌', 'FURNITURE', 43000, 8000, 'COMPLETED', '20
         '{"images":["https://picsum.photos/200/300","https://picsum.photos/200/300"]}');
 INSERT INTO products (ID, WRITER_ID, TITLE, DESCRIPTION, CATEGORY, CURRENT_PRICE, START_PRICE, STATUS, START_DATE,
                       END_DATE, CREATED_AT, UPDATED_AT, IMAGES)
-VALUES (4, 2, 'nintendo', '닌텐도 새 제품', 'GAMES', 10000, 5000, 'IN_PROGRESS', '2024-01-02 00:00:00', '2024-01-04 00:00:00',
+VALUES (4, 2, 'nintendo switch', '닌텐도 새 제품 22', 'GAMES', 10000, 5000, 'IN_PROGRESS', '2024-01-02 00:00:00',
+        '2024-01-04 00:00:00',
         '2024-01-02 00:00:00', '2024-01-02 00:00:00',
         '{"images":["https://picsum.photos/200/300","https://picsum.photos/200/300"]}');
 
@@ -53,7 +54,7 @@ VALUES (1, 1, 2, 10000, 'COMPLETED', '2024-01-06 00:00:00', '2024-01-04 00:00:00
 ALTER TABLE auction_results
     AUTO_INCREMENT = 2;
 
-INSERT INTO chat_rooms(ID, CREATED_AT, UPDATED_AT, PRODUCT_ID, REQUESTER_ID, SELLER_ID)
+INSERT INTO chat_rooms(ID, CREATED_AT, UPDATED_AT, PRODUCT_ID, SENDER_ID, SELLER_ID)
 VALUES (1, '2024-11-27 21:34:28.123', '2024-11-27 21:34:28.567', 4, 1, 2);
 INSERT INTO chat_messages(ID, CHAT_ROOM_ID, CONTENT, SENDER_ID, TIMESTAMP, TYPE)
 VALUES (1, 1, '안녕하세요', 1, '2024-11-27 21:34:36', 'TEXT');

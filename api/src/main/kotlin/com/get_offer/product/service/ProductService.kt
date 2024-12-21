@@ -104,4 +104,10 @@ class ProductService(
 
         return ProductSummaryDto.of(productId, result.result.text)
     }
+
+    fun searchByProductName(productName: String, userId: Long): List<ProductListDto> {
+        val productList = productRepository.findAllByTitleLike("%$productName%")
+
+        return productList.map { ProductListDto.of(it, userId) }
+    }
 }
