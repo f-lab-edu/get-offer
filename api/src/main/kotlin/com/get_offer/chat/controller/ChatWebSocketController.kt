@@ -3,6 +3,8 @@ package com.get_offer.chat.controller
 import com.get_offer.chat.domain.ChatMessage
 import com.get_offer.chat.domain.ChatMessageRepository
 import com.get_offer.chat.domain.ChatRoomRepository
+import com.get_offer.chat.service.ChatRoomService
+import com.get_offer.chat.service.GroupChatRoomService
 import com.get_offer.common.multipart.ImageService
 import java.time.LocalDateTime
 import java.util.*
@@ -17,6 +19,8 @@ class ChatWebSocketController(
     private val chatMessageRepository: ChatMessageRepository,
     private val chatRoomRepository: ChatRoomRepository,
     private val imageService: ImageService,
+    private val chatRoomService: ChatRoomService,
+    private val groupChatRoomService: GroupChatRoomService,
 ) {
 
     @MessageMapping("/chat/{roomId}/send") // 클라이언트가 이 경로로 메시지 전송
@@ -49,5 +53,11 @@ class ChatWebSocketController(
             timestamp = chatMessage.timestamp,
             type = chatMessage.type
         )
+    }
+
+    @MessageMapping("/group-chat/{productId}/send")
+    fun sendMessage(@DestinationVariable productId: Long, message: ChatMessage) {
+        message.chatRoomId = productId
+        groupChatRoomService.processMessage(message)
     }
 }

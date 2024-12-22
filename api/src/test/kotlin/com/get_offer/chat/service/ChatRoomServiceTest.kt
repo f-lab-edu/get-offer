@@ -4,6 +4,7 @@ import com.get_offer.TestFixtures
 import com.get_offer.chat.domain.ChatMessageRepository
 import com.get_offer.chat.domain.ChatRoom
 import com.get_offer.chat.domain.ChatRoomRepository
+import com.get_offer.chat.domain.ChatRoomType
 import com.get_offer.product.domain.ProductRepository
 import java.util.*
 import org.apache.coyote.BadRequestException
@@ -36,9 +37,14 @@ class ChatRoomServiceTest {
             // given
             val requesterId = 1L
             val productId = 100L
-            val existingChatRoom = ChatRoom(id = 10L, requesterId = requesterId, sellerId = 2L, productId = productId)
+            val existingChatRoom = ChatRoom(id = 10L, senderId = requesterId, sellerId = 2L, productId = productId)
 
-            `when`(mockChatRoomRepository.findByRequesterIdAndProductId(requesterId, productId)).thenReturn(
+            `when`(
+                mockChatRoomRepository.findByRoomTypeAndSenderIdAndProductId(
+                    ChatRoomType.PERSONAL, requesterId,
+                    productId
+                )
+            ).thenReturn(
                 existingChatRoom
             )
 
@@ -55,7 +61,13 @@ class ChatRoomServiceTest {
             val requesterId = 1L
             val productId = 100L
 
-            `when`(mockChatRoomRepository.findByRequesterIdAndProductId(requesterId, productId)).thenReturn(null)
+            `when`(
+                mockChatRoomRepository.findByRoomTypeAndSenderIdAndProductId(
+                    ChatRoomType.PERSONAL,
+                    requesterId,
+                    productId
+                )
+            ).thenReturn(null)
             `when`(mockProductRepository.findById(productId)).thenReturn(
                 Optional.of(
                     TestFixtures.createProductWait(
@@ -71,14 +83,20 @@ class ChatRoomServiceTest {
         }
 
         @Test
-        fun `createNewChatRoom`() {
+        fun createNewChatRoom() {
             // given
             val requesterId = 1L
             val productId = 100L
             val sellerId = 2L
-            val newChatRoom = ChatRoom(id = 20L, requesterId = requesterId, sellerId = sellerId, productId = productId)
+            val newChatRoom = ChatRoom(id = 20L, senderId = requesterId, sellerId = sellerId, productId = productId)
 
-            `when`(mockChatRoomRepository.findByRequesterIdAndProductId(requesterId, productId)).thenReturn(null)
+            `when`(
+                mockChatRoomRepository.findByRoomTypeAndSenderIdAndProductId(
+                    ChatRoomType.PERSONAL,
+                    requesterId,
+                    productId
+                )
+            ).thenReturn(null)
             `when`(mockProductRepository.findById(productId)).thenReturn(
                 Optional.of(
                     TestFixtures.createProductWait(

@@ -6,8 +6,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-aop"
     implementation 'io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64'
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign:4.1.3"
+    implementation 'org.redisson:redisson-spring-data-33:3.40.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
+
     implementation project(':domain')
 }
 bootJar {
